@@ -6,6 +6,7 @@ local msHolding = 0
 local allowedJob = false
 local lastListOfPanics = {}
 local isDead = false
+local posWait = false
 
 TriggerEvent(
     "platinlife:getSharedObject",
@@ -16,7 +17,7 @@ TriggerEvent(
 
 Citizen.CreateThread(
     function()
-        while ESX.GetPlayerData() == nil do
+        while ESX.GetPlayerData().job.name == nil do
             Wait(20)
         end
 
@@ -47,7 +48,12 @@ Citizen.CreateThread(
                                 )
                             )
 
-                            updateFunctions()
+                            SendNUIMessage(
+                                {
+                                    value = "triggerOwn"
+                                }
+                            )
+                            playAlarm()
                         end
                     else
                         msHolding = msHolding + 2
@@ -75,48 +81,25 @@ AddEventHandler(
     end
 )
 
-function updateFunctions()
-    SendNUIMessage(
-        {
-            value = "triggerOwn"
-        }
-    )
-    Citizen.CreateThread(
-        function()
-            while isOnCooldown do
-                SendNUIMessage(
-                    {
-                        value = "triggerAlarm"
-                    }
-                )
-                Wait(30000)
-            end
+Citizen.CreateThread(
+    function()
+        while table.empty(lastListOfPanics) do
+            Wait(39)
         end
-    )
-
-    Citizen.CreateThread(
-        function()
-            while table.empty(lastListOfPanics) do
-                Wait(39)
+        while not lastListOfPanics[GetPlayerServerId(GetPlayerIndex())].canArrive do
+            TriggerServerEvent("panicbutton:updatePos", coords)
+            if
+                (not hasItem("phone") and lastListOfPanics[GetPlayerServerId(GetPlayerIndex())].hasPhone and
+                    not lastListOfPanics[GetPlayerServerId(GetPlayerIndex())].hasPanicbutton)
+             then
+                TriggerServerEvent("panicbutton:nophone")
+            elseif (not hasItem("panicbutton") and lastListOfPanics[GetPlayerServerId(GetPlayerIndex())].hasPanicbutton) then
+                TriggerServerEvent("panicbutton:nopanic")
             end
-            while not lastListOfPanics[GetPlayerServerId(GetPlayerIndex())].canArrive do
-                print()
-                TriggerServerEvent("panicbutton:updatePos", coords)
-                if
-                    (not hasItem("phone") and lastListOfPanics[GetPlayerServerId(GetPlayerIndex())].hasPhone and
-                        not lastListOfPanics[GetPlayerServerId(GetPlayerIndex())].hasPanicbutton)
-                 then
-                    TriggerServerEvent("panicbutton:nophone")
-                elseif
-                    (not hasItem("panicbutton") and lastListOfPanics[GetPlayerServerId(GetPlayerIndex())].hasPanicbutton)
-                 then
-                    TriggerServerEvent("panicbutton:nopanic")
-                end
-                Wait(5000)
-            end
+            Wait(5000)
         end
-    )
-end
+    end
+)
 
 RegisterNetEvent("visn_are:SetDeathStatus")
 AddEventHandler(
@@ -127,26 +110,52 @@ AddEventHandler(
     end
 )
 
+function playAlarm()
+    Citizen.CreateThread(
+        function()
+            while table.empty(lastListOfPanics) do
+                SendNUIMessage(
+                    {
+                        value = "triggerAlarm"
+                    }
+                )
+                Wait(20000)
+            end
+           
+        end
+    )
+end
+
 RegisterNetEvent("panicbutton:updatepanics")
 AddEventHandler(
     "panicbutton:updatepanics",
     function(panics, randomX, randomY)
-        if not table.empty(lastListOfPanics) then
-            for _, v in pairs(lastListOfPanics) do
-                if not v.canArrive then
-                    RemoveBlip(v.blip)
+        if not posWait then
+            if not table.empty(lastListOfPanics) then
+                for k, v in pairs(lastListOfPanics) do
+                    if not v.canArrive and not panics[k].canArrive then
+                        print("rem")
+                        RemoveBlip(v.blip)
+                    end
+                end
+            end
+
+            for _, v in pairs(panics) do
+                if v.hasPanicbutton then
+                    print("create")
+                    local x, y, z = table.unpack(v.lastPos)
+                    v.blip = createNewBlip(x, y, z, v.firstname, v.lastname)
+                elseif v.hasPhone then
+                    print("create2")
+                    local x, y, z = table.unpack(v.lastPos)
+                    v.blip = createNewBlipInaccurate(x, y, z, v.firstname, v.lastname, randomX, randomY)
                 end
             end
         end
 
-        for _, v in pairs(panics) do
-            print(v.hasPanicbutton)
-            if v.hasPanicbutton then
-                local x, y, z = table.unpack(v.lastPos)
-                v.blip = createNewBlip(x, y, z, v.firstname, v.lastname)
-            elseif v.hasPhone then
-                local x, y, z = table.unpack(v.lastPos)
-                v.blip = createNewBlipInaccurate(x,y,z, v.firstname, v.lastname, randomX, randomY)
+        if posWait then
+            for k, v in pairs(lastListOfPanics) do
+                panics[k].blip = v.blip
             end
         end
 
@@ -160,7 +169,9 @@ AddEventHandler(
     function(id, random)
         ShowAboveRadarMessage("Die Verbindung zum Funksender des Panicbuttons wurde ~r~verloren!")
         ShowAboveRadarMessage("Versuche Ortung per Telefon. Dies kann einige Sekunden dauern...")
+        posWait = true
         Wait(random)
+        posWait = false
         if (lastListOfPanics[id].hasPhone) then
             ShowAboveRadarMessage(
                 "Ortung per Telefon ~g~erfolgreich. ~w~Eine etwas ungenauere Position wird nun übermittelt!"
@@ -176,9 +187,9 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent("panicbutton:noPhone")
+RegisterNetEvent("panicbutton:lostphone")
 AddEventHandler(
-    "platinlife:noPhone",
+    "platinlife:lostphone",
     function(firstname, lastname, id)
         ShowAboveRadarMessage("Ortung per Telefon ~r~unterbrochen.")
         ShowAboveRadarMessage(
@@ -206,11 +217,11 @@ function createNewBlip(x, y, z, firstname, lastname)
     return blip
 end
 
-function createNewBlipInaccurate(x, y, z, randomX, randomY, firstname, lastname)
+function createNewBlipInaccurate(x, y, z, firstname, lastname, randomX, randomY)
     local blip = AddBlipForCoord(x + randomX, y + randomY, z)
     SetBlipSprite(blip, 161)
 
-    SetBlipScale(blip, 2)
+    SetBlipScale(blip, 2.0)
     SetBlipColour(blip, 1)
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentString("Panic " .. firstname .. " " .. lastname)
@@ -282,6 +293,7 @@ function haveIArrived(id2)
                 if distance <= Config.ArriveDistance then
                     TriggerServerEvent("panicbutton:unitsArrived", _id2)
                 end
+                Wait(100)
             end
         end
     )

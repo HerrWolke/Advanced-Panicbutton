@@ -47,12 +47,14 @@ AddEventHandler(
         activePanics[source].hasPanicbutton = false
         if not activePanics[source].hasPhone then
             activePanics[source].canArrive = true
+            print("can arrive")
         end
+
         local players = ESX.GetPlayers()
         for i, v in pairs(players) do
             local xPlayer = ESX.GetPlayerFromId(v)
             if table.contains(Config.AllowedJobs, xPlayer.getJob().name) then
-                xPlayer.triggerEvent("panicbutton:updatepanics", activePanics, math.random(0, 15), math.random(0, 15))
+                xPlayer.triggerEvent("panicbutton:updatepanics", activePanics, math.random(0, 30), math.random(0, 15))
                 xPlayer.triggerEvent("panicbutton:lostbutton", source, math.random(10000, 20000))
             end
         end
@@ -73,7 +75,7 @@ AddEventHandler(
         for i, v in pairs(players) do
             local xPlayer = ESX.GetPlayerFromId(v)
             if table.contains(Config.AllowedJobs, xPlayer.getJob().name) then
-                xPlayer.triggerEvent("panicbutton:updatepanics", activePanics, math.random(0, 15), math.random(0, 15))
+                xPlayer.triggerEvent("panicbutton:updatepanics", activePanics, math.random(0, 30), math.random(0, 15))
                 xPlayer.triggerEvent(
                     "panicbutton:lostphone",
                     activePanics[source].firstname,
@@ -93,7 +95,7 @@ AddEventHandler(
         for i, v in pairs(players) do
             local xPlayer = ESX.GetPlayerFromId(v)
             if table.contains(Config.AllowedJobs, xPlayer.getJob().name) then
-                xPlayer.triggerEvent("panicbutton:updatepanics", activePanics, math.random(0, 15), math.random(0, 15))
+                xPlayer.triggerEvent("panicbutton:updatepanics", activePanics, math.random(0, 30), math.random(0, 15))
             end
         end
     end
