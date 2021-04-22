@@ -10,8 +10,8 @@
   <a href="https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/github/license/mrcloudyt/FiveM Advanced Panicbutton" />
   </a>
-  <a href="https://twitter.com/\_\_mrcloud" target="_blank">
-    <img alt="Twitter: \_\_mrcloud" src="https://img.shields.io/twitter/follow/__mrcloud.svg?style=social" />
+  <a href="https://twitter.com/_mrcloud" target="_blank">
+    <img alt="Twitter: __mrcloud" src="https://img.shields.io/twitter/follow/__mrcloud?style=social" />
   </a>
 </p>
 
