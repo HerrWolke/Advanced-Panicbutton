@@ -11,7 +11,7 @@
     <img alt="License: MIT" src="https://img.shields.io/github/license/mrcloudyt/FiveM Advanced Panicbutton" />
   </a>
   <a href="https://twitter.com/\_\_mrcloud" target="_blank">
-    <img alt="Twitter: \_\_mrcloud" src="https://img.shields.io/twitter/follow/\__mrcloud.svg?style=social" />
+    <img alt="Twitter: \_\_mrcloud" src="https://img.shields.io/twitter/follow/__mrcloud.svg?style=social" />
   </a>
 </p>
 
