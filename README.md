@@ -8,7 +8,7 @@
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
   <a href="https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/github/license/mrcloudyt/Advanced-Panicbutton" />
+    <img alt="License: GNU GPLv3" src="https://img.shields.io/github/license/mrcloudyt/Advanced-Panicbutton" />
   </a>
   <a href="https://twitter.com/__mrcloud" target="_blank">
     <img alt="Twitter: __mrcloud" src="https://img.shields.io/twitter/follow/__mrcloud?style=social" />
@@ -48,4 +48,4 @@ Give a ⭐️ if you enjoy!
 ## 📝 License
 
 Copyright © 2021 [Mr Cloud](https://github.com/mrcloudyt).<br />
-This project is [MIT](https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE) licensed.
+This project is [GNU GPLv3](https://choosealicense.com/licenses/agpl-3.0/) licensed.
