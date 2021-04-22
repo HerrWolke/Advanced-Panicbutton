@@ -21,12 +21,20 @@
 
 
 > This script provides a advanced Panicbutton for FiveM. Requieres ESX for permission checking.
+> 
+## 📦 Features
+
+* Highly Configurable via Config.lua
+* Keybind for activating panicbutton (default alt + m) -> safety delay 2 sec
+* Blip following activator until both phone and panicbutton are removed from inventory
+* Sound for person activating and responding units
+* Animation (see [Config.lua](https://github.com/MrCloudYT/Advanced-Panicbutton/blob/master/config.lua)
 
 ## Author
 
 👤 **Mr Cloud**
 
-* Twitter: [@\_\_mrcloud](https://twitter.com/\_\_mrcloud)
+* Twitter: [@\_\_mrcloud](https://twitter.com/__mrcloud)
 * Github: [@mrcloudyt](https://github.com/mrcloudyt)
 
 ## 🤝 Contributing
