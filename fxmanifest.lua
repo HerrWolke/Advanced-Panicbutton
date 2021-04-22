@@ -2,7 +2,7 @@ fx_version 'bodacious'
 games { 'gta5' }
 
 author 'Mr Cloud'
-description 'This script provides a Panic Button for Police (Requieres ESX Policejob)'
+description 'This script provides a Panic Button for customisable jobs (ESX requiered)'
 version '1.0.0'
 
 ui_page 'html/index.html'
