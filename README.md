@@ -2,7 +2,7 @@
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/kefranabg/readme-md-generator#readme" target="_blank">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-no-red" />
   </a>
   <a href="https://github.com/kefranabg/readme-md-generator/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
@@ -11,7 +11,7 @@
     <img alt="License: MIT" src="https://img.shields.io/github/license/mrcloudyt/FiveM Advanced Panicbutton" />
   </a>
   <a href="https://twitter.com/\_\_mrcloud" target="_blank">
-    <img alt="Twitter: \_\_mrcloud" src="https://img.shields.io/twitter/follow/\_\_mrcloud.svg?style=social" />
+    <img alt="Twitter: \_\_mrcloud" src="https://img.shields.io/twitter/follow/\__mrcloud.svg?style=social" />
   </a>
 </p>
 
