@@ -34,12 +34,12 @@ local stopAlarms = false
 --     end
 -- )
 
-RegisterCommand(
-    "del",
-    function()
-        DeleteObject(prop)
-    end
-)
+-- RegisterCommand(
+--     "del",
+--     function()
+--         DeleteObject(prop)
+--     end
+-- )
 
 TriggerEvent(
     "platinlife:getSharedObject",
@@ -66,12 +66,13 @@ Citizen.CreateThread(
         while true do
             ped = GetPlayerPed(-1)
             coords = GetEntityCoords(ped)
+            local x, y = table.unpack(coords)
 
             if allowedJob then
                 if ((not isOnCooldown) and IsControlPressed(0, Config.Modifier) and IsControlPressed(0, Config.Button)) then
                     if (msHolding >= Config.PressTime * 100) then
                         DisableControlAction(0, Config.Button, true)
-                       
+
                         msHolding = 0
                         if hasItem("panicbutton") then
                             TriggerServerEvent(
@@ -85,7 +86,8 @@ Citizen.CreateThread(
                                     false,
                                     GetPlayerServerId(GetPlayerIndex()),
                                     false
-                                )
+                                ),
+                                GetEntityHealth(ped)
                             )
 
                             SendNUIMessage(
@@ -93,16 +95,27 @@ Citizen.CreateThread(
                                     value = "triggerOwn"
                                 }
                             )
-                            playAlarm()
 
                             startCooldown()
                             DisableControlAction(0, 301, false)
                         end
                     else
                         if msHolding == 0 and Config.Animation.play then
-                            TaskPlayAnim(PlayerPedId(), Config.Animation.dictName, Config.Animation.animName, Config.Animation.fadeIn, Config.Animation.fadeOut, Config.Animation.playtime, 49, 0, 0, 0, 0)
+                            TaskPlayAnim(
+                                PlayerPedId(),
+                                Config.Animation.dictName,
+                                Config.Animation.animName,
+                                Config.Animation.fadeIn,
+                                Config.Animation.fadeOut,
+                                Config.Animation.playtime,
+                                49,
+                                0,
+                                0,
+                                0,
+                                0
+                            )
                         end
-                    
+
                         msHolding = msHolding + 2
                     end
                 else
@@ -159,14 +172,58 @@ AddEventHandler(
     end
 )
 
-function playAlarm()
+function playAlarm(streetName, streetName2)
     Citizen.CreateThread(
         function()
             if isOnCooldown then
                 Wait(15000)
             end
 
-            while not table.empty(lastListOfPanics) and not stopAlarms and not(table.length(lastListOfPanics) == 1 and table.first(lastListOfPanics).unitsArrived) do
+            if not isOnCooldown then
+                SendNUIMessage(
+                    {
+                        value = "play",
+                        sound = "./audio/code_99.wav"
+                    }
+                )
+                Wait(2200)
+                SendNUIMessage(
+                    {
+                        value = "play",
+                        sound = "./audio/at.wav"
+                    }
+                )
+                Wait(1000)
+                SendNUIMessage(
+                    {
+                        value = "street",
+                        streetname = "STREET_" .. (streetName:upper()):gsub("%s+", "_")
+                    }
+                )
+                print("STREET_" .. (streetName:upper()):gsub("%s+", "_"))
+                Wait(2100)
+                if streetName2 ~= 0 and streetName2 ~= "" then
+                    SendNUIMessage(
+                        {
+                            value = "play",
+                            sound = "./audio/close-to.wav"
+                        }
+                    )
+                    Wait(1200)
+                    SendNUIMessage(
+                        {
+                            value = "street",
+                            streetname = "STREET_" .. (streetName2:upper()):gsub("%s+", "_")
+                        }
+                    )
+                    -- end
+
+                    Wait(5000)
+                end
+            end
+
+            while not table.empty(lastListOfPanics) and not stopAlarms and
+                not (table.length(lastListOfPanics) == 1 and table.first(lastListOfPanics).unitsArrived) do
                 SendNUIMessage(
                     {
                         value = "triggerAlarm"
@@ -182,7 +239,7 @@ end
 RegisterNetEvent("panicbutton:updatepanics")
 AddEventHandler(
     "panicbutton:updatepanics",
-    function(panics, randomX, randomY, firsttime)
+    function(panics, randomX, randomY, firsttime, health)
         if firsttime ~= -1 then
             local pos = panics[firsttime].lastPos
             local firstname = panics[firsttime].firstname
@@ -209,6 +266,8 @@ AddEventHandler(
                                 lastname .. " bei ~r~" .. streetName .. " ~w~ X ~r~ " .. streetName2 .. "~w~ ausgelöst!"
                 )
             end
+
+            playAlarm(streetName, streetName2, health)
         end
 
         if not posWait then
@@ -259,7 +318,7 @@ AddEventHandler(
     "panicbutton:canelingpanics",
     function(firstname, lastname)
         ShowAboveRadarMessage(
-            "Alle Alarmsounds wurde vom Beamten " .. firstname .. " " .. lastname .. " ~r~deaktiviert."
+            "Alle Panicbuttons wurde vom Beamten " .. firstname .. " " .. lastname .. " ~r~deaktiviert."
         )
     end
 )
@@ -281,6 +340,7 @@ AddEventHandler(
             ShowAboveRadarMessage(
                 "Ortung per Telefon ~r~unerfolgreich.  ~w~Positionsupdates können nicht mehr durchgeführt werden!"
             )
+            print(allowedJob and not isDead and not isOnCooldown)
             if allowedJob and not isDead and not isOnCooldown then
                 haveIArrived(id)
             end
@@ -292,11 +352,10 @@ RegisterNetEvent("panicbutton:unitsarrived_cl")
 AddEventHandler(
     "panicbutton:unitsarrived_cl",
     function(id)
-        
-            ShowAboveRadarMessage(
-                "Einheiten eingetroffen beim Panicbutton von " .. lastListOfPanics[id].firstname .. " " .. lastListOfPanics[id].lastname
-            )
-          
+        ShowAboveRadarMessage(
+            "Einheiten eingetroffen beim Panicbutton von " ..
+                lastListOfPanics[id].firstname .. " " .. lastListOfPanics[id].lastname
+        )
     end
 )
 
@@ -325,8 +384,9 @@ function createNewBlip(x, y, z, firstname, lastname)
     AddTextComponentString("Panic " .. firstname .. " " .. lastname)
     EndTextCommandSetBlipName(blip)
 
-    SetBlipRoute(blip, true)
     SetWaypointOff()
+    SetBlipRoute(blip, true)
+
     return blip
 end
 
@@ -340,8 +400,9 @@ function createNewBlipInaccurate(x, y, z, firstname, lastname, randomX, randomY)
     AddTextComponentString("Panic " .. firstname .. " " .. lastname)
     EndTextCommandSetBlipName(blip)
 
-    SetBlipRoute(blip, true)
     SetWaypointOff()
+    SetBlipRoute(blip, true)
+
     return blip
 end
 
@@ -384,9 +445,11 @@ end
 
 function table.length(table)
     local count = 0
-    for _ in pairs(table) do count = count + 1 end
+    for _ in pairs(table) do
+        count = count + 1
+    end
     return count
-  end
+end
 
 function PanicInfo(firstname, lastname, hasPanicbutton, hasPhone, lastPos, unitsArrived, id, canArrive)
     return {
@@ -412,8 +475,11 @@ function haveIArrived(id2)
     Citizen.CreateThread(
         function()
             local _id2 = id2
+
             while not lastListOfPanics[_id2].unitsArrived and not isDead and not isOnCooldown do
+                print(not lastListOfPanics[_id2].unitsArrived and not isDead and not isOnCooldown)
                 local distance = #(lastListOfPanics[_id2].lastPos - coords)
+                print(distance)
                 if distance <= Config.ArriveDistance then
                     TriggerServerEvent("panicbutton:unitsArrived", _id2)
                 end

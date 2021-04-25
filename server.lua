@@ -11,7 +11,7 @@ TriggerEvent(
 RegisterNetEvent("panicbutton:panic")
 AddEventHandler(
     "panicbutton:panic",
-    function(panicInfo)
+    function(panicInfo,health)
         local _source = source
         local xPlayer2 = ESX.GetPlayerFromId(_source)
         local string = xPlayer2.getIdentifier()
@@ -32,7 +32,8 @@ AddEventHandler(
                             activePanics,
                             math.random(10, 30),
                             math.random(5, 15),
-                            _source
+                            _source,
+                            health
                         )
                     end
                 end
@@ -147,11 +148,13 @@ RegisterNetEvent("panicbutton:unitsarrived")
 AddEventHandler(
     "panicbutton:unitsarrived",
     function(id)
+        print("server recieved")
         activePanics[id].unitsArrived = true
         activePanics[id].canArrive = false
         local players = ESX.GetPlayers()
         for i, v in pairs(players) do
             local xPlayer = ESX.GetPlayerFromId(v)
+            print(table.unpack(Config.AllowedJobs))
             if table.contains(Config.AllowedJobs, xPlayer.getJob().name) then
                 xPlayer.triggerEvent(
                     "panicbutton:updatepanics",
@@ -191,22 +194,30 @@ AddEventHandler(
 RegisterNetEvent("panicbutton:stopallpanics")
 AddEventHandler(
     "panicbutton:stopallpanics",
-    function()
+    function(id)
         activePanics = {}
-        local players = ESX.GetPlayers()
-        for _, v in pairs(players) do
-            local xPlayer = ESX.GetPlayerFromId(v)
-            if table.contains(Config.AllowedJobs, xPlayer.getJob().name) then
-                xPlayer.triggerEvent(
-                    "panicbutton:updatepanics",
-                    activePanics,
-                    math.random(-50, 20) + 10,
-                    math.random(-25, 10) + 10,
-                    -1
-                )
-                xPlayer.triggerEvent("panicbutton:canelingpanics")
+        local xPlayer2 = ESX.GetPlayerFromId(id)
+        local string = xPlayer2.getIdentifier()
+        MySQL.Async.fetchAll(
+            "SELECT * FROM users WHERE identifier = @identifier",
+            {["@identifier"] = string},
+            function(result)
+                local players = ESX.GetPlayers()
+                for _, v in pairs(players) do
+                    local xPlayer = ESX.GetPlayerFromId(v)
+                    if table.contains(Config.AllowedJobs, xPlayer.getJob().name) then
+                        xPlayer.triggerEvent(
+                            "panicbutton:updatepanics",
+                            activePanics,
+                            math.random(-50, 20) + 10,
+                            math.random(-25, 10) + 10,
+                            -1
+                        )
+                        xPlayer.triggerEvent("panicbutton:canelingpanics",result[1].firstname,result[2].lastname)
+                    end
+                end
             end
-        end
+        )
     end
 )
 
@@ -254,3 +265,12 @@ function hasItem(itemName)
         return false
     end
 end
+
+
+AddEventHandler("startProjectileEvent", function ()
+    print("stop")
+end)
+
+AddEventHandler("onServerResourceStarting", function ()
+    print("test")
+end)

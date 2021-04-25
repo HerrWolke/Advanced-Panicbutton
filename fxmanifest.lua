@@ -19,7 +19,9 @@ server_scripts {
 files {
     'html/index.html',
     'html/listener.js',
-    "html/audio/*.ogg"
+    "html/audio/*.ogg",
+    "html/audio/*.wav",
+    "html/audio/streets/*.wav"
 }
 
 shared_script 'config.lua'

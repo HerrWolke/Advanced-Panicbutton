@@ -4,7 +4,7 @@ Config.AllowedJobs = {
     "fire", "police", "ambulance", "mechanic"
 }
 
-Config.ArriveDistance = 15
+Config.ArriveDistance = 20
 
 --dont touch anything other than dictName and animName if you dont know what you are doing
 Config.Animation = {
