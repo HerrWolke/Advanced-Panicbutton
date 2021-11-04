@@ -5,18 +5,15 @@
   <a href="https://github.com/kefranabg/readme-md-generator/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
-  
-  <a href="https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE" target="https://github.com/MrCloudYT/Advanced-Panicbutton">
-    <img alt="License: GNU GPLv3" src="https://img.shields.io/github/license/mrcloudyt/Advanced-Panicbutton" />
+   <a href="" target="_blank">
+    <img alt="Last Update" src="https://img.shields.io/github/last-commit/MrCloudYT/Advanced-Panicbutton" />
   </a>
-  
+    
   <a href="https://twitter.com/__mrcloud" target="_blank">
     <img alt="Twitter: __mrcloud" src="https://img.shields.io/twitter/follow/__mrcloud?style=social" />
   </a>
   
-    <a href="https://github.com/MrCloudYT/Advanced-Panicbutton" target="_blank">
-    <img alt="Last Update" src="https://img.shields.io/github/last-commit/MrCloudYT/Advanced-Panicbutton" />
-  </a>
+
 </p>
 
 
