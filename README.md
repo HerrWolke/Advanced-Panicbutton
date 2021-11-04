@@ -14,7 +14,7 @@
     <img alt="Twitter: __mrcloud" src="https://img.shields.io/twitter/follow/__mrcloud?style=social" />
   </a>
   
-    <a href="https://github.com/MrCloudYT/Advanced-Panicbutton" target="https://github.com/MrCloudYT/Advanced-Panicbutton">
+    <a href="https://github.com/MrCloudYT/Advanced-Panicbutton" target="_blank">
     <img alt="Last Update" src="https://img.shields.io/github/last-commit/MrCloudYT/Advanced-Panicbutton" />
   </a>
 </p>
