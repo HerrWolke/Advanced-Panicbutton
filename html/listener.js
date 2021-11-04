@@ -26,7 +26,7 @@ $(function () {
 
                     
                     var audio = new Audio("./audio/streets/" + item.streetname + ".wav")
-                    audio.volume = 0.1
+                    audio.volume = 0.2
                     audio.play()
                 } else if (item.value === "play") {
                     var audio = new Audio(item.sound)
