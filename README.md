@@ -25,9 +25,10 @@
 ## 📦 Features
 
 * Highly Configurable via [Config.lua](https://github.com/MrCloudYT/Advanced-Panicbutton/blob/master/config.lua)
+* Multiple Languages Support (de done, en has some german text in it)
 * Keybind for activating panicbutton (default alt + m) -> safety delay 2 sec
 * Blip following activator until both phone and panicbutton are removed from inventory (can be configured on and off)
-* Sound for person activating and responding units
+* Sound for person activating and responding units 
 * Animation on activation
 
 ## Author
