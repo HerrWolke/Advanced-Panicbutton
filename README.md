@@ -1,16 +1,20 @@
 <h1 align="center">Welcome to FiveM Advanced Panicbutton 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.2.0-blue.svg?cacheSeconds=2592000" />
+  
   <a href="https://github.com/kefranabg/readme-md-generator/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
+  
   <a href="https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE" target="https://github.com/MrCloudYT/Advanced-Panicbutton">
     <img alt="License: GNU GPLv3" src="https://img.shields.io/github/license/mrcloudyt/Advanced-Panicbutton" />
   </a>
+  
   <a href="https://twitter.com/__mrcloud" target="_blank">
     <img alt="Twitter: __mrcloud" src="https://img.shields.io/twitter/follow/__mrcloud?style=social" />
   </a>
-    <a href="https://twitter.com/__mrcloud" target="_blank">
+  
+    <a href="https://github.com/MrCloudYT/Advanced-Panicbutton" target="https://github.com/MrCloudYT/Advanced-Panicbutton">
     <img alt="Last Update" src="https://img.shields.io/github/last-commit/MrCloudYT/Advanced-Panicbutton" />
   </a>
 </p>
