@@ -56,7 +56,7 @@ Config.EnableAlarmRepeat = false
 --Min 6 seconds (lower will still work but then you will have overlapping of the sound)
 Config.RepeatAlarmDelay = 20
 
---dont touch anything other than dictName and animName if you dont know what you are doing
+--dont touch anything other than play if you don't know what you are doing (to deactive/activate animation)
 Config.Animation = {
     play = true,
     --ms
